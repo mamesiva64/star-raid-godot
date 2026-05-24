@@ -3,4 +3,4 @@
 *.tmp
 *.translation
 export_credentials.cfg
-
+docs/*.import

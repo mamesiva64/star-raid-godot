@@ -4,10 +4,19 @@ A small Godot 4.6 browser game inspired by classic fixed-screen alien shooters.
 
 ## Controls
 
-- Move: arrow keys or A/D
-- Fire: Space or Enter
-- Touch: drag to move, tap to fire
+- Move: arrow keys, A/D, or relative touch drag
+- Fire: automatic
 - Restart: Space, Enter, or tap after game over
+
+## Powerups
+
+Carrier enemies are marked with a ring. Destroy them to drop timed items:
+
+- `3WAY`: three-shot spread
+- `LASER`: forward beam
+- `RAPID`: faster auto-fire
+- `GUARD`: temporary shield
+- `WIDE`: five-shot spread
 
 ## Local Run
 
@@ -23,4 +32,3 @@ mkdir -p docs
 ```
 
 The `docs/` directory is intended for GitHub Pages.
-
