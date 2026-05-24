@@ -21,8 +21,10 @@ const POWERUP_TIME := {
 	"SPREAD": 7.0,
 }
 
-var art: Texture2D = preload("res://assets/star_raid_sprite_sheet.png")
+var art: Texture2D = load("res://assets/star_raid_sprite_sheet_alpha.png")
 var player_x := SIZE.x * 0.5
+var pointer_down := false
+var pointer_last_x := 0.0
 var shot_timer := 0.0
 var enemy_dir := 1.0
 var enemy_speed := 34.0
@@ -102,14 +104,32 @@ func _process(delta: float) -> void:
 
 
 func _unhandled_input(event: InputEvent) -> void:
-	if event is InputEventScreenTouch and event.pressed and game_over:
-		_restart()
+	if event is InputEventScreenTouch:
+		if event.pressed:
+			if game_over:
+				_restart()
+			pointer_down = true
+			pointer_last_x = event.position.x
+		else:
+			pointer_down = false
 	elif event is InputEventScreenDrag:
-		player_x = clamp(player_x + event.relative.x, 46.0, SIZE.x - 46.0)
-	elif event is InputEventMouseMotion and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
-		player_x = clamp(player_x + event.relative.x, 46.0, SIZE.x - 46.0)
-	elif event is InputEventMouseButton and event.pressed and game_over:
-		_restart()
+		_move_player_to_pointer(event.position.x)
+	elif event is InputEventMouseButton and event.button_index == MOUSE_BUTTON_LEFT:
+		if event.pressed:
+			if game_over:
+				_restart()
+			pointer_down = true
+			pointer_last_x = event.position.x
+		else:
+			pointer_down = false
+	elif event is InputEventMouseMotion and pointer_down and event.button_mask & MOUSE_BUTTON_MASK_LEFT:
+		_move_player_to_pointer(event.position.x)
+
+
+func _move_player_to_pointer(pointer_x: float) -> void:
+	var delta_x := pointer_x - pointer_last_x
+	pointer_last_x = pointer_x
+	player_x = clamp(player_x + delta_x, 46.0, SIZE.x - 46.0)
 
 
 func _update_player(delta: float) -> void:
